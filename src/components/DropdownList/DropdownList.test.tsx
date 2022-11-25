@@ -1,5 +1,5 @@
 import { DropdownList, DropdownListProps } from "./DropdownList";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 
 const labels = {
   hide: "Hide",
@@ -37,11 +37,31 @@ describe("<DropdownList />", () => {
    * Check if all items have been rendered correctly
    * Check if the remove callback is being called with correct values
    */
-  test("Should render ul component when click on button", () => {});
+  test("Should render ul component when click on button", () => {
+    const { container, getByText } = makeSut({});
+    const showLabel = labels.show;
+    fireEvent.click(getByText(showLabel));
+    expect(container.querySelector("ul")).toBeInTheDocument();
+  });
 
-  test("Should switch button label on click", () => {});
+  test("Should switch button label on click", () => {
+    const { getByText } = makeSut({});
+    expect(getByText(labels.show)).toBeInTheDocument();
+    fireEvent.click(getByText(labels.show));
+    expect(getByText(labels.hide)).toBeInTheDocument();
+  });
 
-  test("Should render 3 li correctly", () => {});
+  test("Should render 3 li correctly", () => {
+    const { container, getByText } = makeSut({});
+    fireEvent.click(getByText(labels.show));
+    expect(container.querySelectorAll("li")).toHaveLength(3);
+  });
 
-  test("Should call onRemoveItem callback correctly", () => {});
+  test("Should call onRemoveItem callback correctly", () => {
+    const onRemoveItem = jest.fn();
+    const { getByText, getAllByText } = makeSut({ onRemoveItem });
+    fireEvent.click(getByText(labels.show));
+    fireEvent.click(getAllByText(/Remove/)[2]);
+    expect(onRemoveItem).toHaveBeenCalledWith(data[2], 2);
+  });
 });

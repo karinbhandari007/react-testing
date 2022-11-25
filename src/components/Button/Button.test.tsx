@@ -8,9 +8,9 @@ const makeSut = (props: Partial<ButtonProps>) => {
 
 describe("<Button />", () => {
   test("Should render label correctly", () => {
-    const { getByText } = makeSut({ label: "Click Me!" });
+    const { getByText } = makeSut({ label: "Click Here!" });
 
-    expect(getByText(/Click Me!/)).toBeInTheDocument();
+    expect(getByText(/Click Here!/)).toBeInTheDocument();
   });
 
   test("Should call onClick successfully", () => {
